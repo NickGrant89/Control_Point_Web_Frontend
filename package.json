@@ -1,12 +1,12 @@
 {
-  "name": "onecEnterprise",
+  "name": "CP-Kitchen-builder",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "OCS Ltd",
+  "author": "Nick Grant",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^3.0.0",

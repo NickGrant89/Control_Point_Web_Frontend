@@ -179,6 +179,28 @@ router.post('/dataset/edit/:id', ensureAuthenticated,  (req, res) => {
  });
 
  //Add submit device with form
+router.post('/dataset/device/edit/:id', ensureAuthenticated,  (req, res) => {
+    let device = {};
+    device.dataSetName = req.body.dataSetName;
+    device.primary = req.body.primary;
+    device.backup = req.body.backup;
+  
+    let query = {_id:req.params.id}
+
+    DataSet.update(query, device, function(err){
+         if(err){
+             console.log(err);
+             return;
+         }
+         else{
+            req.flash('success', 'Devices Updated')
+            res.redirect('/controlpoint/'+req.params.id)
+         }
+    });
+    console.log('')
+ });
+
+ //Add submit device with form
 router.post('/dataset/software/edit/:id', ensureAuthenticated,  (req, res) => {
      
     

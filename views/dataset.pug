@@ -47,7 +47,8 @@ block content
                                 each d, i in dataset.devices
                                     tr.odd.gradeX
                                         td
-                                            a(href="/devices/")= d.deviceId
+                                            a(href='#editDevice', data-toggle='modal', data-target='#editDevice') 
+                                                = d.deviceId
                                         td
                                             = d.decription 
                                         td
@@ -163,7 +164,52 @@ block content
                                                         |Adobee Reader  
                                                         input(name='software', type='checkbox', value='ar', checked=ar)
                                             input.btn.btn-primary(type='submit', value='Submit')
-                                            a.btn.btn-danger(href='/controlpoint/'+dataset._id) Cancel   
+                                            a.btn.btn-danger(href='/controlpoint/'+dataset._id) Cancel 
+                    #editDevice.modal.fade(tabindex='-1', role='dialog', aria-labelledby='editDeviceLabel', aria-hidden='true')
+                        .modal-dialog(role='document')
+                            .modal-content
+                                .modal-header
+                                    h5#editDeviceLabel.modal-title Edit Device
+                                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                        span(aria-hidden='true')
+                                .modal-body
+                                    form(method='POST', action='/controlpoint/dataset/device/edit/'+dataset._id) 
+                                        #form-group
+                                            label Device ID:
+                                            input.form-control(name='deviceId', type='text')                  
+                                        #form-group
+                                            label Decription:
+                                            input.form-control(name='decription', type='text')
+                                        #form-group
+                                            label Device Type:
+                                            select.form-control(name='deviceType', type='text')
+                                                option ePic
+                                                option CE
+                                                option ePic CE
+                                                option xCeed
+                                                option xCeed 2
+                                                option Win32
+                                                option eXpert
+                                                option Onlyx
+                                                option All-in-One
+                                                option MP9
+                                                option CE Device
+                                                option Ethernet Printer
+                                        #form-group
+                                            label IP Address:
+                                            input.form-control(name='ipAddress', type='text')
+                                        #form-group
+                                            label Subnet:
+                                            input.form-control(name='subnetMask', type='text')
+                                        #form-group
+                                            label Gateway:
+                                            input.form-control(name='defaultGateway', type='text')
+                                        #form-group
+                                            label Primary DNS:
+                                            input.form-control(name='primaryDns', type='text', value=dataset.devices.primaryDns)
+                                            br
+                                        input.btn.btn-primary(type='submit', value='Submit')
+                                        a.btn.btn-danger(href='/controlpoint/'+dataset._id) Cancel       
             // /.panel-body
           // /.panel
       // /.row
