@@ -10,7 +10,7 @@ const session = require('express-session');
 const config = require('./config/database')
 const passport = require('passport');
 
-// This calls the Device model to intergate the DB
+// This calls the Device model to intergate the DBnjkn
 
 const ensureAuthenticated = require('../onecEnterprise/middleware/login-auth')
 
