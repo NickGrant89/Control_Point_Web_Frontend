@@ -14,15 +14,16 @@ let DataSet = require('../models/dataset');
 
 router.get('/', ensureAuthenticated, function(req, res){
 
-        if(err){res.redirect('/')}
+    DataSet.find({}, function(err, datasets){
 
             //console.log(devices)
-            res.render('dataset', {
+            res.render('controlpoint', {
                 title:'Devices',
+                datasets:datasets,
             });
                     
               
-           
+        });         
 });
 
 
@@ -55,7 +56,7 @@ router.get('/:id', ensureAuthenticated, (req, res) => {
         } 
 
         //hello(dataset.settings.software);
-        console.log(hello2('cp'));
+        //console.log(dataset.devices);
         //console.log(hello(dataset.settings.software));
         res.render('dataset', {
             dataset:dataset,

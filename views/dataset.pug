@@ -1,219 +1,214 @@
 extends layout
 
 block content
-    #page-wrapper
-      .row
-        .col-lg-12
-          h3.page-header Control Point Devices
-      .row
-        .col-lg-12
-          != messages('message', locals)
-          .panel.panel-default
-            .panel-heading
-              | Dataset Information - #{dataset.dataSetName}
-            // /.panel-heading
-            .panel-body
-              // Nav tabs
-              ul.nav.nav-tabs
-                li.active
-                  a(href="#home" data-toggle="tab") Devices
-                li
-                    a(href='#addUser', data-toggle='modal', data-target='#addUser') Add Device
-                li
-                    a(href='#editDataset', data-toggle='modal', data-target='#editDataset') Edit Dataset
-                li
-                    a(href='#editSetting', data-toggle='modal', data-target='#editSetting') Software List        
-              // Tab panes
-              .tab-content
-                #home.tab-pane.fade.in.active
-                    // /.row
-                    .row
-                    .col-lg-12
-                        .panel.panel-default
-                        .panel-heading
-                        // /.panel-heading
-                        .panel-body
-                            table#dataTables-example.table.table-striped.table-bordered.table-hover(width="100%")
-                              thead
+  // Begin Page Content
+  .container-fluid
+    // Page Heading
+    .d-sm-flex.align-items-center.justify-content-between.mb-4
+      h1.h3.mb-0.text-gray-800 
+        
+    // Content Row
+    .row
+      // Content Column
+      .col-lg-12.mb-4
+        // DataTales Example
+        .card.shadow.mb-4
+          .card-header.py-3
+            h6.m-0.font-weight-bold.text-primary #{dataset.dataSetName} Dataset 
+          .card-body
+            ul#myTab.nav.nav-tabs(role='tablist')
+              li.nav-item
+                a#contact-tab.nav-link.active(data-toggle='tab', href='#contact', role='tab', aria-controls='contact', aria-selected='false') Dataset
+              li.nav-item
+                a#home-tab.nav-link(href='#addDevice', data-toggle='modal', data-target='#addDevice') Add Device
+              li.nav-item
+                a#profile-tab.nav-link(href='#editDataset', data-toggle='modal', data-target='#editDataset') Edit Dataset
+              li.nav-item
+                a#contact1-tab.nav-link(href='#editSetting', data-toggle='modal', data-target='#editSetting') Software List
+            #myTabContent.tab-content
+              #contact.tab-pane.fade.show.active(role='tabpanel', aria-labelledby='contact-tab') 
+                
+                // DataTales Example
+             
+                .card-header.py-3
+                   
+                .card-body
+                    .table-responsive
+                        table#dataTable.table.table-bordered(width='100%', cellspacing='15')
+                            thead
                                 tr
-                                  th Device ID
-                                  th Decription
-                                  th Device Type
-                                  th IP Address
-                                  th Subnet
-                                  th Default Gateway
-                                  th Primary DNS
-                              tbody
+                                    th Device ID
+                                    th Decription
+                                    th Device Type
+                                    th IP Address
+                                    th Subnet
+                                    th Default Gateway
+                                    th Primary DNS
+                            tbody
                                 each d, i in dataset.devices
-                                    tr.odd.gradeX
-                                        td
-                                            a(href='#editDevice', data-toggle='modal', data-target='#editDevice') 
-                                                = d.deviceId
-                                        td
-                                            = d.decription 
-                                        td
-                                            = d.deviceType 
-                                        td
-                                            = d.ipAddress        
-                                        td
-                                            = d.subnetMask 
-                                        td
-                                            = d.defaultGateway 
-                                        td
-                                            = d.primaryDns 
-                                    
-                            // /.table-responsive
-                        // /.panel-body
-                        // /.panel
-
-                        #editDataset.modal.fade(tabindex='-1', role='dialog', aria-labelledby='editDatasetLabel', aria-hidden='true')
-                            .modal-dialog(role='document')
-                                .modal-content
-                                    .modal-header
-                                        h5#editDataset.modal-title Edit Dataset
-                                        button.close(type='button', data-dismiss='modal', aria-label='Close')
-                                            span(aria-hidden='true')
-                                    .modal-body
-                                        form(method='POST', action='/controlpoint/dataset/edit/'+dataset._id)
-                                            #form-group
-                                                label Dataset Name:
-                                                input.form-control(name='dataSetName', type='text', value=dataset.dataSetName)
-                                            #form-group
-                                                label Primary IP:
-                                                input.form-control(name='primary', type='text', value=dataset.primary)
-                                            #form-group
-                                                label Backup IP:
-                                                input.form-control(name='backup', type='text' value=dataset.backup)    
-                                            br
-                                            input.btn.btn-primary(type='submit', value='Submit')
-                                            a.btn.btn-danger(href='/controlpoint/'+dataset._id) Cancel 
-                        #addUser.modal.fade(tabindex='-1', role='dialog', aria-labelledby='addUserLabel', aria-hidden='true')
-                            .modal-dialog(role='document')
-                                .modal-content
-                                    .modal-header
-                                        h5#addUserLabel.modal-title Add Device
-                                        button.close(type='button', data-dismiss='modal', aria-label='Close')
-                                            span(aria-hidden='true')
-                                    .modal-body
-                                        form(method='POST', action='/controlpoint/dataset/device/add/'+dataset._id) 
-                                            #form-group
-                                                label Device ID:
-                                                input.form-control(name='deviceId', type='text')                  
-                                            #form-group
-                                                label Decription:
-                                                input.form-control(name='decription', type='text')
-                                            #form-group
-                                                label Device Type:
-                                                select.form-control(name='deviceType', type='text')
-                                                    option ePic
-                                                    option CE
-                                                    option ePic CE
-                                                    option xCeed
-                                                    option xCeed 2
-                                                    option Win32
-                                                    option eXpert
-                                                    option Onlyx
-                                                    option All-in-One
-                                                    option MP9
-                                                    option CE Device
-                                                    option Ethernet Printer
-                                            #form-group
-                                                label IP Address:
-                                                input.form-control(name='ipAddress', type='text')
-                                            #form-group
-                                                label Subnet:
-                                                input.form-control(name='subnetMask', type='text')
-                                            #form-group
-                                                label Gateway:
-                                                input.form-control(name='defaultGateway', type='text')
-                                            #form-group
-                                                label Primary DNS:
-                                                input.form-control(name='primaryDns', type='text')
-                                                br
-                                            input.btn.btn-primary(type='submit', value='Submit')
-                                            a.btn.btn-danger(href='/controlpoint/'+dataset._id) Cancel                      
-                    #editSetting.modal.fade(tabindex='-1', role='dialog', aria-labelledby='editSettingLabel', aria-hidden='true')
-                            .modal-dialog(role='document')
-                                .modal-content
-                                    .modal-header
-                                        h5#editSettingLabel.modal-title Software Install List
-                                        button.close(type='button', data-dismiss='modal', aria-label='Close')
-                                            span(aria-hidden='true')
-                                    .modal-body
-                                        form(method='POST', action='/controlpoint/dataset/software/edit/'+dataset._id) 
-                                            #form-group
-                                                label
-                                                    .checkbox    
-                                                    label
-                                                        |Control Point  
-                                                        input(name='software', type='checkbox', value='cp', checked=cp)
-                                                    .checkbox    
-                                                    label
-                                                        |Report Viewer  
-                                                        input(name='software', type='checkbox', value='rv', checked=rv)
-                                                    .checkbox    
-                                                    label
-                                                        |Kitchen Builder  
-                                                        input(name='software', type='checkbox', value='kb', checked=kb)
-                                                    .checkbox    
-                                                    label
-                                                        |Google Chrome  
-                                                        input(name='software', type='checkbox', value='gc', checked=gc)
-                                                    .checkbox    
-                                                    label
-                                                        |Adobee Reader  
-                                                        input(name='software', type='checkbox', value='ar', checked=ar)
-                                            input.btn.btn-primary(type='submit', value='Submit')
-                                            a.btn.btn-danger(href='/controlpoint/'+dataset._id) Cancel 
-                    #editDevice.modal.fade(tabindex='-1', role='dialog', aria-labelledby='editDeviceLabel', aria-hidden='true')
-                        .modal-dialog(role='document')
-                            .modal-content
-                                .modal-header
-                                    h5#editDeviceLabel.modal-title Edit Device
-                                    button.close(type='button', data-dismiss='modal', aria-label='Close')
-                                        span(aria-hidden='true')
-                                .modal-body
-                                    form(method='POST', action='/controlpoint/dataset/device/edit/'+dataset._id) 
-                                        #form-group
-                                            label Device ID:
-                                            input.form-control(name='deviceId', type='text')                  
-                                        #form-group
-                                            label Decription:
-                                            input.form-control(name='decription', type='text')
-                                        #form-group
-                                            label Device Type:
-                                            select.form-control(name='deviceType', type='text')
-                                                option ePic
-                                                option CE
-                                                option ePic CE
-                                                option xCeed
-                                                option xCeed 2
-                                                option Win32
-                                                option eXpert
-                                                option Onlyx
-                                                option All-in-One
-                                                option MP9
-                                                option CE Device
-                                                option Ethernet Printer
-                                        #form-group
-                                            label IP Address:
-                                            input.form-control(name='ipAddress', type='text')
-                                        #form-group
-                                            label Subnet:
-                                            input.form-control(name='subnetMask', type='text')
-                                        #form-group
-                                            label Gateway:
-                                            input.form-control(name='defaultGateway', type='text')
-                                        #form-group
-                                            label Primary DNS:
-                                            input.form-control(name='primaryDns', type='text', value=dataset.devices.primaryDns)
-                                            br
-                                        input.btn.btn-primary(type='submit', value='Submit')
-                                        a.btn.btn-danger(href='/controlpoint/'+dataset._id) Cancel       
-            // /.panel-body
-          // /.panel
-      // /.row
-    // /#page-wrapper
-    // /#wrapper
-    // jQuery
-    
+                                        tr.odd.gradeX
+                                            td
+                                                a(href='#editDevice', data-toggle='modal', data-target='#editDevice') 
+                                                    = d.deviceId
+                                            td
+                                                = d.decription 
+                                            td
+                                                = d.deviceType 
+                                            td
+                                                = d.ipAddress        
+                                            td
+                                                = d.subnetMask 
+                                            td
+                                                = d.defaultGateway 
+                                            td
+                                                = d.primaryDns    
+              #home.tab-pane.fade(role='tabpanel', aria-labelledby='home-tab') ...
+              #profile.tab-pane.fade(role='tabpanel', aria-labelledby='profile-tab') ...
+                
+              #kl.tab-pane.fade(role='tabpanel', aria-labelledby='kl-tab') ...
+    // /.container-fluid
+    // End of Main Content
+    #addDevice.modal.fade(tabindex='-1', role='dialog', aria-labelledby='addDeviceLabel', aria-hidden='true')
+        .modal-dialog(role='document')
+            .modal-content
+                .modal-header
+                    h5#addDevice.modal-title Add Device
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                        span(aria-hidden='true')
+                .modal-body
+                    form(method='POST', action='/controlpoint/dataset/device/add/'+dataset._id) 
+                        #form-group
+                            label Device ID:
+                            input.form-control(name='deviceId', type='text')                  
+                        #form-group
+                            label Decription:
+                            input.form-control(name='decription', type='text')
+                        #form-group
+                            label Device Type:
+                            select.form-control(name='deviceType', type='text')
+                                option ePic
+                                option CE
+                                option ePic CE
+                                option xCeed
+                                option xCeed 2
+                                option Win32
+                                option eXpert
+                                option Onlyx
+                                option All-in-One
+                                option MP9
+                                option CE Device
+                                option Ethernet Printer
+                        #form-group
+                            label IP Address:
+                            input.form-control(name='ipAddress', type='text')
+                        #form-group
+                            label Subnet:
+                            input.form-control(name='subnetMask', type='text')
+                        #form-group
+                            label Gateway:
+                            input.form-control(name='defaultGateway', type='text')
+                        #form-group
+                            label Primary DNS:
+                            input.form-control(name='primaryDns', type='text')
+                            br
+                        input.btn.btn-primary(type='submit', value='Submit')
+                        a.btn.btn-danger(href='/controlpoint/'+dataset._id) Cancel
+    #editDataset.modal.fade(tabindex='-1', role='dialog', aria-labelledby='editDatasetLabel', aria-hidden='true')
+        .modal-dialog(role='document')
+            .modal-content
+                .modal-header
+                    h5#editDataset.modal-title Edit Dataset
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                        span(aria-hidden='true')
+                .modal-body
+                    form(method='POST', action='/controlpoint/dataset/edit/'+dataset._id)
+                        #form-group
+                            label Dataset Name:
+                            input.form-control(name='dataSetName', type='text', value=dataset.dataSetName)
+                        #form-group
+                            label Primary IP:
+                            input.form-control(name='primary', type='text', value=dataset.primary)
+                        #form-group
+                            label Backup IP:
+                            input.form-control(name='backup', type='text' value=dataset.backup)    
+                        br
+                        input.btn.btn-primary(type='submit', value='Submit')
+                        a.btn.btn-danger(href='/controlpoint/'+dataset._id) Cancel 
+    #editSetting.modal.fade(tabindex='-1', role='dialog', aria-labelledby='editSettingLabel', aria-hidden='true')
+        .modal-dialog(role='document')
+            .modal-content
+                .modal-header
+                    h5#editSetting.modal-title Edit Dataset
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                        span(aria-hidden='true')
+                .modal-body
+                    form(method='POST', action='/controlpoint/dataset/software/edit/'+dataset._id) 
+                        #form-group
+                            label
+                                .checkbox    
+                                label
+                                    |Control Point  
+                                    input(name='software', type='checkbox', value='cp', checked=cp)
+                                .checkbox    
+                                label
+                                    |Report Viewer  
+                                    input(name='software', type='checkbox', value='rv', checked=rv)
+                                .checkbox    
+                                label
+                                    |Kitchen Builder  
+                                    input(name='software', type='checkbox', value='kb', checked=kb)
+                                .checkbox    
+                                label
+                                    |Google Chrome  
+                                    input(name='software', type='checkbox', value='gc', checked=gc)
+                                .checkbox    
+                                label
+                                    |Adobee Reader  
+                                    input(name='software', type='checkbox', value='ar', checked=ar)
+                        input.btn.btn-primary(type='submit', value='Submit')
+                        a.btn.btn-danger(href='/controlpoint/'+dataset._id) Cancel 
+    #editDevice.modal.fade(tabindex='-1', role='dialog', aria-labelledby='editDeviceLabel', aria-hidden='true')
+        .modal-dialog(role='document')
+            .modal-content
+                .modal-header
+                    h5#editDevice.modal-title Edit Device
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                        span(aria-hidden='true')
+                .modal-body
+                    form(method='POST', action='/controlpoint/dataset/device/edit/'+dataset._id) 
+                        #form-group
+                            label Device ID:
+                            input.form-control(name='deviceId', type='text' value=dataset.deviceId)                  
+                        #form-group
+                            label Decription:
+                            input.form-control(name='decription', type='text')
+                        #form-group
+                            label Device Type:
+                            select.form-control(name='deviceType', type='text')
+                                option ePic
+                                option CE
+                                option ePic CE
+                                option xCeed
+                                option xCeed 2
+                                option Win32
+                                option eXpert
+                                option Onlyx
+                                option All-in-One
+                                option MP9
+                                option CE Device
+                                option Ethernet Printer
+                        #form-group
+                            label IP Address:
+                            input.form-control(name='ipAddress', type='text' value=dataset.devices.deviceId)
+                        #form-group
+                            label Subnet:
+                            input.form-control(name='subnetMask', type='text')
+                        #form-group
+                            label Gateway:
+                            input.form-control(name='defaultGateway', type='text')
+                        #form-group
+                            label Primary DNS:
+                            input.form-control(name='primaryDns', type='text', value=dataset.devices.primaryDns)
+                            br
+                        input.btn.btn-primary(type='submit', value='Submit')
+                        a.btn.btn-danger(href='/controlpoint/'+dataset._id) Cancel                                          

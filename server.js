@@ -18,6 +18,8 @@ let DataSet = require('./models/dataset');
 
 let User = require('./models/user');
 
+let Device = require('./models/device');
+
 // Call Moongoose connection
 const mongoose = require('mongoose');
 mongoose.connect(config.database,{ useNewUrlParser: true });
@@ -54,7 +56,7 @@ app.use(bodyParser.json())
 
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.use(express.static(path.join(__dirname, 'sbadmin')))
+app.use(express.static(path.join(__dirname, 'NewSB')))
 
 //Express session Middleware
 
@@ -88,11 +90,11 @@ app.get('*', function(req, res, next){
 //GET display SB Admin page
 
 app.get('/', ensureAuthenticated, function(req, res){
-    DataSet.find({}, function(err, dataset){
-        console.log(dataset);
+    Device.find({}, function(err, devices){
+        console.log(devices);
     res.render('index', {
         title:'Dashboard',
-        dataset:dataset,
+        devices:devices,
         
     });
 });
@@ -104,11 +106,13 @@ let users = require('./routes/users');
 let jwt = require('./routes/apiJWT');
 let apiControlPoint = require('./routes/apiControlPoint');
 let controlpoint = require('./routes/controlpoint');
+let devices = require('./routes/devices');
 
 app.use('/users', users);
 app.use('/api/v1/controlpoint/', apiControlPoint);
 app.use('/api/v1/auth/', jwt);
 app.use('/controlpoint', controlpoint);
+app.use('/devices', devices);
 
 
 app.get('*', function(req, res) {
