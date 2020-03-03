@@ -12,7 +12,7 @@ const passport = require('passport');
 
 // This calls the Device model to intergate the DB
 
-const ensureAuthenticated = require('../onecEnterprise/middleware/login-auth')
+const ensureAuthenticated = require('./middleware/login-auth')
 
 let DataSet = require('./models/dataset');
 
@@ -89,7 +89,7 @@ app.get('*', function(req, res, next){
 
 app.get('/', ensureAuthenticated, function(req, res){
     DataSet.find({}, function(err, dataset){
-        console.log(dataset);
+        //console.log(dataset);
     res.render('index', {
         title:'Dashboard',
         dataset:dataset,

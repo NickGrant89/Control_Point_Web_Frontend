@@ -24,18 +24,82 @@ $(document).ready(function(){
 });
 ;
 
-function myFunction1() {
-    document.getElementById("status").value = device.status;
-}
+    //Get single relay.
 
-function myFunction() {
-    var checkBox = document.getElementById("myCheck");
-    var text = document.getElementById("myDIV");
-    if (checkBox.checked == true ){
-      text.style.display = "block";
-    } else {
-       text.style.display = "none";
-    }
-}
+$(document).ready(function(){
+    $('.editDevice').on('click', function(e){
+        $target = $(e.target);
+        const id = $target.attr('data-id');
+        const id2 = $target.attr('data-title');
+            console.log(id2);
+            $.ajax({
+                type:'GET',
+                //data: dataJson,
+                url: '/controlpoint/devices/'+id + '/'+id2,
+                dataType: "json",
+                contentType: "application/json",
+                success: function(response){
+                    console.log(response);
+                    //  var h = response._id;
+                    $("#Id").val(response._id);
+                    $("#deviceId").val(response.deviceId);
+                    $("#decription").val(response.decription);
+                    $("#deviceType").val(response.deviceType);
+                    //$("#deviceType").val("eXpert");
+                    $("#ipAddress").val(response.ipAddress);
+                    $("#subnetMask").val(response.subnetMask);
+                    $("#gateway").val(response.defaultGateway);
+                    $("#primaryDns").val(response.primaryDns);
 
+                },
+                error: function(err){
+                        console.log(err); 
+                },     
+            });
+    });
+});
+
+  //Get single relay.
+
+  $(document).ready(function(){
+    $('.updateDevice').on('click', function(e){
+        $target = $(e.target);
+            var id = $("#Id").val();
+            var id2 = $("#Id2").val();
+            console.log(id2);
+            var delDevice =  confirm('Are you sure you want to delete this device?');
+            if(delDevice == true){
+            const dataJson = {
+                Id : id,
+                deviceId : $("#deviceId").val(),
+                decription : $("#decription").val(),
+                deviceTupe : $("#deviceType").val(),
+                 //$("#deviceType").val("eXpert");
+                ipAddress : $("#ipAddress").val(),
+                subnetMask : $("#subnetMask").val(),
+                defaultGateway : $("#gateway").val(),
+                primaryDns :$("#primaryDns").val(),
+            };
+            
+            $.ajax({
+                type:'POST',
+                data: JSON.stringify(dataJson),
+                url: '/controlpoint/devices/'+id+'/'+id2,
+                dataType: "json",
+                contentType: "application/json",
+                success: function(response){
+                alert('Device Updated');
+                 window.location.href='/'
+                
+                 
+
+                },
+                error: function(err){
+                       console.log(err); 
+                },
+                
+            });
+        }
   
+    });
+  });

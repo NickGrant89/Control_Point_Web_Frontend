@@ -44,13 +44,13 @@ block content
                                   th Default Gateway
                                   th Primary DNS
                               tbody
-                                each d, i in dataset.devices
+                                each d, i in devices
                                     tr.odd.gradeX
                                         td
-                                            a(href='#editDevice', data-toggle='modal', data-target='#editDevice') 
+                                            a.editDevice(href='#editDevice', data-toggle='modal', data-target='#editDevice', data-id=d._id, data-title=dataset._id) 
                                                 = d.deviceId
                                         td
-                                            = d.decription 
+                                            = d.decription
                                         td
                                             = d.deviceType 
                                         td
@@ -79,11 +79,14 @@ block content
                                                 label Dataset Name:
                                                 input.form-control(name='dataSetName', type='text', value=dataset.dataSetName)
                                             #form-group
-                                                label Primary IP:
+                                                label Kitchen Primary IP:
                                                 input.form-control(name='primary', type='text', value=dataset.primary)
                                             #form-group
-                                                label Backup IP:
-                                                input.form-control(name='backup', type='text' value=dataset.backup)    
+                                                label Kitchen Backup IP:
+                                                input.form-control(name='backup', type='text' value=dataset.backup) 
+                                            #form-group
+                                                label Control Point Primay IP:
+                                                input.form-control(name='cpPrimary', type='text' value=dataset.backup)        
                                             br
                                             input.btn.btn-primary(type='submit', value='Submit')
                                             a.btn.btn-danger(href='/controlpoint/'+dataset._id) Cancel 
@@ -155,6 +158,10 @@ block content
                                                     label
                                                         |Kitchen Builder  
                                                         input(name='software', type='checkbox', value='kb', checked=kb)
+                                                    .checkbox
+                                                    label
+                                                        |Kitchen Server  
+                                                        input(name='software', type='checkbox', value='ks', checked=ks)
                                                     .checkbox    
                                                     label
                                                         |Google Chrome  
@@ -173,16 +180,20 @@ block content
                                     button.close(type='button', data-dismiss='modal', aria-label='Close')
                                         span(aria-hidden='true')
                                 .modal-body
-                                    form(method='POST', action='/controlpoint/dataset/device/edit/'+dataset._id) 
+                                    form(method='POST', action='/controlpoint/device/'+dataset._id+'/') 
+                                        #form-group
+                                            input#Id.form-control(name='_id',  type= 'hidden')
+                                        #form-group
+                                            input#Id2.form-control(name='_id2',  type= 'hidden' ,value=dataset._id)    
                                         #form-group
                                             label Device ID:
-                                            input.form-control(name='deviceId', type='text')                  
+                                            input#deviceId.form-control(name='deviceId', type='text' )                  
                                         #form-group
                                             label Decription:
-                                            input.form-control(name='decription', type='text')
+                                            input#decription.form-control(name='decription', type='text')
                                         #form-group
                                             label Device Type:
-                                            select.form-control(name='deviceType', type='text')
+                                            select#deviceType.form-control(name='deviceType', type='text')
                                                 option ePic
                                                 option CE
                                                 option ePic CE
@@ -197,18 +208,18 @@ block content
                                                 option Ethernet Printer
                                         #form-group
                                             label IP Address:
-                                            input.form-control(name='ipAddress', type='text')
+                                            input#ipAddress.form-control(name='ipAddress', type='text')
                                         #form-group
                                             label Subnet:
-                                            input.form-control(name='subnetMask', type='text')
+                                            input#subnetMask.form-control(name='subnetMask', type='text')
                                         #form-group
                                             label Gateway:
-                                            input.form-control(name='defaultGateway', type='text')
+                                            input#gateway.form-control(name='defaultGateway', type='text')
                                         #form-group
                                             label Primary DNS:
-                                            input.form-control(name='primaryDns', type='text', value=dataset.devices.primaryDns)
+                                            input#primaryDns.form-control(name='primaryDns', type='text', value=dataset.devices.primaryDns)
                                             br
-                                        input.btn.btn-primary(type='submit', value='Submit')
+                                        input.updateDevice.btn.btn-primary( type='button' value='Submit')
                                         a.btn.btn-danger(href='/controlpoint/'+dataset._id) Cancel       
             // /.panel-body
           // /.panel

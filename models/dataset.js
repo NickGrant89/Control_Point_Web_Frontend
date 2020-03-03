@@ -43,6 +43,10 @@ const DataSetSchema = mongoose.Schema({
         type: String,
         required: false
     },
+    cpPrimary:{
+        type: String,
+        required: false
+    },
     subnetMask:{
         type: String
     },    
