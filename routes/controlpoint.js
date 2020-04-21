@@ -13,17 +13,11 @@ let DataSet = require('../models/dataset');
 //GET Method to display devices on page.
 
 router.get('/', ensureAuthenticated, function(req, res){
-
-    DataSet.find({}, function(err, datasets){
-
-            //console.log(devices)
-            res.render('controlpoint', {
-                title:'Devices',
-                datasets:datasets,
-            });
-                    
-              
-        });         
+    if(err){res.redirect('/')}
+    //console.log(devices)
+    res.render('dataset', {
+        title:'Devices',
+    });
 });
 
 
@@ -54,20 +48,63 @@ router.get('/:id', ensureAuthenticated, (req, res) => {
                     
                     return false;
         } 
-
+        if(dataset.primary ==undefined){
+            dataset.primary = '';
+        }
+        const token = dataset.primary.split('.');
+        
+        var ip = token[0] + '.' + token[1] + '.' +token[2] + '.';
         //hello(dataset.settings.software);
-        //console.log(dataset.devices);
+        //console.log(dataset);
         //console.log(hello(dataset.settings.software));
         res.render('dataset', {
             dataset:dataset,
+            devices:dataset.devices,
             cp:hello2('cp'),
             rv:hello2('rv'),
             kb:hello2('kb'),
+            ks:hello2('ks'),
             gc:hello2('gc'),
             ar:hello2('ar'),
+            ip:ip,
+            subnetMask: dataset.subnetMask,
+            defaultGateway: dataset.defaultGateway,
+            primaryDns : dataset.primaryDns,
         });
         //console.log(device);
     });
+});
+
+//Get single device
+router.get('/devices/:id/:id2', ensureAuthenticated, function(req, res){
+    DataSet.findById(req.params.id2, function(err, relay){
+        //console.log(req.params.id);
+        if(err){return}
+        var doc = relay.devices.id(req.params.id);
+        //relay.devices.id(req.params.id).
+            //console.log(doc);
+   
+        res.json(doc);
+       
+    });
+});
+
+//Edit single device
+router.post('/devices/:id/:id2', ensureAuthenticated, function(req, res){
+    //console.log(req.params)
+
+    DataSet.findById(req.params.id2, function(err, dataset) {
+        var subDoc = dataset.devices.id(req.params.id);
+        subDoc.set(req.body);
+      
+        // Using a promise rather than a callback
+        dataset.save().then(function(savedPost) {
+          res.json('success');
+        }).catch(function(err) {
+          res.status(500).send(err);
+        });
+      });
+    
 });
 
 // ...rest of the initial code omitted for simplicity.
@@ -162,7 +199,11 @@ router.post('/dataset/edit/:id', ensureAuthenticated,  (req, res) => {
     let device = {};
     device.dataSetName = req.body.dataSetName;
     device.primary = req.body.primary;
+    device.subnetMask = req.body.subnetMask;
+    device.defaultGateway = req.body.defaultGateway;
+    device.primaryDns = req.body.primaryDns;
     device.backup = req.body.backup;
+    device.cpPrimary = req.body.cpPrimary;
   
     let query = {_id:req.params.id}
 
@@ -185,6 +226,7 @@ router.post('/dataset/device/edit/:id', ensureAuthenticated,  (req, res) => {
     device.dataSetName = req.body.dataSetName;
     device.primary = req.body.primary;
     device.backup = req.body.backup;
+    evice.cpPrimary = req.body.cpPrimary;
   
     let query = {_id:req.params.id}
 
@@ -229,18 +271,47 @@ router.post('/dataset/software/edit/:id', ensureAuthenticated,  (req, res) => {
 });
 
  //Delete edit form
-router.delete('/:id', ensureAuthenticated, (req, res) => {
+router.delete('/device/:id/:id2', ensureAuthenticated, (req, res) => {
     /* if(!req.user._id){
         res.status(500).send();
     } */
 
     let query = {_id:req.params.id}
 
-    Device.findById(req.params.id, function(err, device){
+    DataSet.findById(req.params.id, function(err, dataset){
         /* if(device.owner != req.user._id){
             res.status(500).send();
         }else{ */
-            Device.deleteOne(query, function(err){
+           
+        //}
+
+
+        // Equivalent to `parent.children.pull(_id)`
+        dataset.devices.id(req.params.id2).remove();
+        // Equivalent to `parent.child = null`
+        dataset.devices.remove();
+        dataset.save(function (err) {
+        if (err) return handleError(err);
+        res.redirect('/controlpoint/'+req.params.id)
+        console.log('the subdocs were removed');
+        });
+
+    });
+});
+
+ //Delete edit form
+ router.delete('/dataset/:id', ensureAuthenticated, (req, res) => {
+    /* if(!req.user._id){
+        res.status(500).send();
+    } */
+
+    let query = {_id:req.params.id}
+
+    DataSet.findById(req.params.id, function(err, device){
+        /* if(device.owner != req.user._id){
+            res.status(500).send();
+        }else{ */
+            DataSet.deleteOne(query, function(err){
                 if(err){
                     console.log(err)
                 }
@@ -249,5 +320,6 @@ router.delete('/:id', ensureAuthenticated, (req, res) => {
         //}
     });
 });
+
 
 module.exports = router;
