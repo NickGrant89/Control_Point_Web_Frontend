@@ -1,0 +1,135 @@
+extends layout
+
+block content
+  // Begin Page Content
+  .container-fluid
+    // Page Heading
+    .d-sm-flex.align-items-center.justify-content-between.mb-4
+      h1.h3.mb-0.text-gray-800 #{device.pcname} - 
+        
+    // Content Row
+    .row
+      // Content Column
+      .col-lg-12.mb-4
+        // DataTales Example
+        .card.shadow.mb-4
+          .card-header.py-3
+            h6.m-0.font-weight-bold.text-primary Kitchen Server
+          .card-body
+            ul#myTab.nav.nav-tabs(role='tablist')
+              li.nav-item
+                a#home-tab.nav-link.active(data-toggle='tab', href='#home', role='tab', aria-controls='home', aria-selected='true') Software Versions
+              li.nav-item
+                a#profile-tab.nav-link(href='#editSetting', data-toggle='modal', data-target='#editSetting') Software List
+              li.nav-item
+                a#contact-tab.nav-link(data-toggle='tab', href='#contact', role='tab', aria-controls='contact', aria-selected='false') Control Point
+              li.nav-item
+                a#contact-tab.nav-link(data-toggle='tab', href='#kl', role='tab', aria-controls='kl', aria-selected='false') Kitchen Log 
+            #myTabContent.tab-content
+              #home.tab-pane.fade.show.active(role='tabpanel', aria-labelledby='home-tab') ...
+              #profile.tab-pane.fade(role='tabpanel', aria-labelledby='profile-tab') ...
+              #contact.tab-pane.fade(role='tabpanel', aria-labelledby='contact-tab')
+                
+              #kl.tab-pane.fade(role='tabpanel', aria-labelledby='kl-tab') ...
+              
+                   
+              
+  // /.container-fluid
+  // End of Main Content
+  #editSetting.modal.fade(tabindex='-1', role='dialog', aria-labelledby='editSettingLabel', aria-hidden='true')
+        .modal-dialog(role='document')
+            .modal-content
+                .modal-header
+                    h5#editSetting.modal-title Edit Dataset
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                        span(aria-hidden='true')
+                .modal-body
+                    form(method='POST', action='/devices/software/edit/'+device._id) 
+                        #form-group
+                            label
+                                .checkbox    
+                                label
+                                    |Control Point  
+                                    input(name='software', type='checkbox', value='cp', checked=cp)
+                                .checkbox    
+                                label
+                                    |Report Viewer  
+                                    input(name='software', type='checkbox', value='rv', checked=rv)
+                                .checkbox    
+                                label
+                                    |Kitchen Builder  
+                                    input(name='software', type='checkbox', value='kb', checked=kb)
+                                .checkbox    
+                                label
+                                    |Google Chrome  
+                                    input(name='software', type='checkbox', value='gc', checked=gc)
+                                .checkbox    
+                                label
+                                    |Adobee Reader  
+                                    input(name='software', type='checkbox', value='ar', checked=ar)
+                        input.btn.btn-primary(type='submit', value='Submit')
+                        a.btn.btn-danger(href='/') Cancel
+  #editDevice.modal.fade(tabindex='-1', role='dialog', aria-labelledby='editDeviceLabel', aria-hidden='true')
+    .modal-dialog(role='document')
+        .modal-content
+            .modal-header
+                h5#editDeviceLabel.modal-title Edit Device
+                button.close(type='button', data-dismiss='modal', aria-label='Close')
+                    span(aria-hidden='true')
+            .modal-body
+                form(method='POST', action='/devices/edit/'+device.id)
+                    
+                    #form-group
+                        label PC Name:
+                        input.form-control(name='pcname', type='text', value=device.pcname)
+                    #form-group
+                        label IP Address:
+                        input.form-control(name='ipaddress', type='text' value= device.ipaddress)   
+                    br
+                    input.btn.btn-primary(type='submit', value='Submit')
+                    a.btn.btn-danger(href='/devices/'+device._id) Cancel                                               
+  #editSetting.modal.fade(tabindex='-1', role='dialog', aria-labelledby='editSettingLabel', aria-hidden='true')
+    .modal-dialog.modal-lg(role='document')
+        .modal-content
+            .modal-header
+                h5#editSettingLabel.modal-title Device Settings
+                button.close(type='button', data-dismiss='modal', aria-label='Close')
+                    span(aria-hidden='true')
+            .modal-body
+              ul#myTab.nav.nav-tabs(role='tablist')
+                li.nav-item
+                  a#home-tab.nav-link.active(data-toggle='tab', href='#home', role='tab', aria-controls='home', aria-selected='true') IP Settings
+                li.nav-item
+                  a#profile-tab.nav-link(data-toggle='tab', href='#profile', role='tab', aria-controls='profile', aria-selected='false') Profile
+                li.nav-item
+                  a#contact-tab.nav-link(data-toggle='tab', href='#contact', role='tab', aria-controls='contact', aria-selected='false') Power Bi Settings
+              #myTabContent.tab-content
+                #home.tab-pane.fade.show.active(role='tabpanel', aria-labelledby='home-tab') ...
+                #profile.tab-pane.fade(role='tabpanel', aria-labelledby='profile-tab') ...
+                #contact.tab-pane.fade(role='tabpanel', aria-labelledby='contact-tab')
+                  .container
+                    .card.shadow.mb-4
+                      .card-header.py-3
+                        h6.m-0.font-weight-bold.text-primary File Transfer
+                      .card-body
+                        form(method='POST', action='/devices/settings/'+device.id)
+                          #form-group
+                            .checkbox
+                            label 
+                            | Activate: 
+                            input(name='ftStatus', type='checkbox', value='true', id="myCheck" , onclick="myFunction()" checked=check)
+                          #form-group
+                            .form-check
+                              input#exampleRadios1.form-check-input(type='radio', name='type', value='server', checked=serverSetTure)
+                              label.form-check-label
+                                | Server
+                            .form-check
+                              input#exampleRadios2.form-check-input(type='radio', name='type', value='client' ,checked=clientSetTrue)
+                              label.form-check-label
+                                | Clents  
+                          br      
+                          input.btn.btn-primary(type='submit', value='Update')
+            .modal-footer
+              
+              |
+              a.btn.btn-danger(href='/devices/'+device._id) Cancel  

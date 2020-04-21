@@ -1,0 +1,41 @@
+extends layout
+
+block content
+  // Begin Page Content
+  .container-fluid
+    // Page Heading
+    .d-sm-flex.align-items-center.justify-content-between.mb-4
+      h1.h3.mb-0.text-gray-800  
+        
+    // Content Row
+    .row
+      // Content Column
+      .col-lg-12.mb-4
+        // DataTales Example
+        .card.shadow.mb-4
+          .card-header.py-3
+            h6.m-0.font-weight-bold.text-primary Kitchen Server
+          .card-body
+            .table-responsive
+              table#dataTable.table.table-bordered(width='100%', cellspacing='15')
+                thead
+                  tr
+                    th Dataset Name
+                    th Primary IP Address
+                    th Backup IP Address
+                   
+                tbody
+                  each dataset, i in datasets
+                    tr.odd.gradeX
+                      td
+                          a(href="/controlpoint/"+dataset._id)=dataset.dataSetName
+                      td
+                        = dataset.primary
+                      td
+                        = dataset.email
+                  
+              
+                   
+              
+  // /.container-fluid
+  // End of Main Content

@@ -35,14 +35,14 @@ router.get('/', ensureAuthenticated, function(req, res){
             const q = {'company': user.company}
             console.log(q);
             User.find(q, function(err, users){
-                Company.find({'name': user.company}, function(err, companies){
+             
                 res.render('users', {
                     title:'Users',
                     users: users,
                     companies:companies,
                 });
             });
-        });
+
         }
     });
 });
