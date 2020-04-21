@@ -12,7 +12,7 @@ const passport = require('passport');
 
 // This calls the Device model to intergate the DB
 
-const ensureAuthenticated = require('../onecEnterprise/middleware/login-auth')
+const ensureAuthenticated = require('./middleware/login-auth')
 
 let DataSet = require('./models/dataset');
 
