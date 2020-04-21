@@ -13,11 +13,14 @@ let DataSet = require('../models/dataset');
 //GET Method to display devices on page.
 
 router.get('/', ensureAuthenticated, function(req, res){
-    if(err){res.redirect('/')}
+    DataSet.find({}, function(err, datasets){
+    //if(err){res.redirect('/')}
     //console.log(devices)
-    res.render('dataset', {
+    res.render('datasets', {
         title:'Devices',
+        datasets:datasets,
     });
+});
 });
 
 

@@ -54,7 +54,7 @@ app.use(bodyParser.json())
 
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.use(express.static(path.join(__dirname, 'sbadmin')))
+app.use(express.static(path.join(__dirname, 'NewSB')))
 
 //Express session Middleware
 
@@ -88,11 +88,12 @@ app.get('*', function(req, res, next){
 //GET display SB Admin page
 
 app.get('/', ensureAuthenticated, function(req, res){
-    DataSet.find({}, function(err, dataset){
+    DataSet.find({}, function(err, datasets){
         //console.log(dataset);
     res.render('index', {
         title:'Dashboard',
-        dataset:dataset,
+        datasets:datasets,
+        devices:{},
         
     });
 });
