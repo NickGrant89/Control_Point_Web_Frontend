@@ -18,8 +18,6 @@ let DataSet = require('./models/dataset');
 
 let User = require('./models/user');
 
-let Device = require('./models/device');
-
 // Call Moongoose connection
 const mongoose = require('mongoose');
 mongoose.connect(config.database,{ useNewUrlParser: true });
@@ -56,7 +54,7 @@ app.use(bodyParser.json())
 
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.use(express.static(path.join(__dirname, 'NewSB')))
+app.use(express.static(path.join(__dirname, 'sbadmin')))
 
 //Express session Middleware
 
@@ -69,7 +67,7 @@ app.use(session({
   //Express message middleware
 
   app.use(require('connect-flash')());
-  app.use(function (req, res, next) {
+  app.use(function (req, res, next) { 
   res.locals.messages = require('express-messages')(req, res);
   next();
 });
@@ -90,11 +88,11 @@ app.get('*', function(req, res, next){
 //GET display SB Admin page
 
 app.get('/', ensureAuthenticated, function(req, res){
-    Device.find({}, function(err, devices){
-        console.log(devices);
+    DataSet.find({}, function(err, dataset){
+        //console.log(dataset);
     res.render('index', {
         title:'Dashboard',
-        devices:devices,
+        dataset:dataset,
         
     });
 });
@@ -106,13 +104,11 @@ let users = require('./routes/users');
 let jwt = require('./routes/apiJWT');
 let apiControlPoint = require('./routes/apiControlPoint');
 let controlpoint = require('./routes/controlpoint');
-let devices = require('./routes/devices');
 
 app.use('/users', users);
 app.use('/api/v1/controlpoint/', apiControlPoint);
 app.use('/api/v1/auth/', jwt);
 app.use('/controlpoint', controlpoint);
-app.use('/devices', devices);
 
 
 app.get('*', function(req, res) {
