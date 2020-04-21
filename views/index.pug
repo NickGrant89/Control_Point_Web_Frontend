@@ -87,12 +87,15 @@ block content
                   table#dataTables-example.table.table-striped.table-bordered.table-hover(width="100%")
                     thead
                       tr
+                        th Dataset ID
                         th Dataset Name
                         th Primary
                         th Backup
                     tbody
                       each d, i in dataset
                         tr.odd.gradeX
+                          td
+                            = d._id
                           td
                             a(href="/controlpoint/"+d._id) 
                               = d.dataSetName

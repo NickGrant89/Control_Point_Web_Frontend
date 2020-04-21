@@ -22,7 +22,9 @@ block content
                 li
                     a(href='#editDataset', data-toggle='modal', data-target='#editDataset') Edit Dataset
                 li
-                    a(href='#editSetting', data-toggle='modal', data-target='#editSetting') Software List        
+                    a(href='#editSetting', data-toggle='modal', data-target='#editSetting') Software List
+                li
+                    a.delete-dataset(href="" data-toggle="modal" data-id=dataset._id) Delete Dataset           
               // Tab panes
               .tab-content
                 #home.tab-pane.fade.in.active
@@ -82,11 +84,20 @@ block content
                                                 label Kitchen Primary IP:
                                                 input.form-control(name='primary', type='text', value=dataset.primary)
                                             #form-group
+                                                label Subnetmask:
+                                                input.form-control(name='subnetMask', type='text', value=dataset.subnetMask)
+                                            #form-group
+                                                label Default Gateway:
+                                                input.form-control(name='defaultGateway', type='text', value=dataset.defaultGateway)
+                                            #form-group
+                                                label Primary DNS:
+                                                input.form-control(name='primaryDns', type='text', value=dataset.primaryDns)            
+                                            #form-group
                                                 label Kitchen Backup IP:
                                                 input.form-control(name='backup', type='text' value=dataset.backup) 
                                             #form-group
                                                 label Control Point Primay IP:
-                                                input.form-control(name='cpPrimary', type='text' value=dataset.backup)        
+                                                input.form-control(name='cpPrimary', type='text' value=dataset.cpPrimary)        
                                             br
                                             input.btn.btn-primary(type='submit', value='Submit')
                                             a.btn.btn-danger(href='/controlpoint/'+dataset._id) Cancel 
@@ -122,16 +133,16 @@ block content
                                                     option Ethernet Printer
                                             #form-group
                                                 label IP Address:
-                                                input.form-control(name='ipAddress', type='text')
+                                                input.form-control(name='ipAddress', type='text' value=ip)
                                             #form-group
                                                 label Subnet:
-                                                input.form-control(name='subnetMask', type='text')
+                                                input.form-control(name='subnetMask', type='text' value=subnetMask)
                                             #form-group
-                                                label Gateway:
-                                                input.form-control(name='defaultGateway', type='text')
+                                                label Default Gateway:
+                                                input.form-control(name='defaultGateway', type='text' value=defaultGateway)
                                             #form-group
                                                 label Primary DNS:
-                                                input.form-control(name='primaryDns', type='text')
+                                                input.form-control(name='primaryDns', type='text' value=primaryDns)
                                                 br
                                             input.btn.btn-primary(type='submit', value='Submit')
                                             a.btn.btn-danger(href='/controlpoint/'+dataset._id) Cancel                      
@@ -220,7 +231,8 @@ block content
                                             input#primaryDns.form-control(name='primaryDns', type='text', value=dataset.devices.primaryDns)
                                             br
                                         input.updateDevice.btn.btn-primary( type='button' value='Submit')
-                                        a.btn.btn-danger(href='/controlpoint/'+dataset._id) Cancel       
+                                        a.btn.btn-danger(href='/controlpoint/'+dataset._id) Cancel 
+                                        a.delete-device.btn.btn-danger(href='', data-id=dataset._id, data-type='#Ip') Delete Device        
             // /.panel-body
           // /.panel
       // /.row
