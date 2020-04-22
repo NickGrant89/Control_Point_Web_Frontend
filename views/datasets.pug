@@ -75,16 +75,16 @@ block content
                     th Primary IP
                     th Secondry IP
                 tbody
-                  each dataset, i in datasets
+                  each datasets, i in dataset
                     tr
                       td
-                        a(href="/controlpoint/"+ dataset._id)= dataset._id
+                        a(href="/controlpoint/"+ datasets._id)= datasets._id
                       td
-                        = dataset.dataSetName
+                        = datasets.dataSetName
                       td
-                        = dataset.primary
+                        = datasets.primary
                       td
-                        = dataset.backup      
+                        = datasets.backup      
                                
       // /.End of datatable
   // /.container-fluid

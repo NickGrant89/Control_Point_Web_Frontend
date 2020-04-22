@@ -20,7 +20,7 @@ let User = require('./models/user');
 
 // Call Moongoose connection
 const mongoose = require('mongoose');
-mongoose.connect(config.database,{ useNewUrlParser: true });
+mongoose.connect(config.database,{ useNewUrlParser: true , useUnifiedTopology: true }, );
 
 // Starting DB connection
 
@@ -88,11 +88,11 @@ app.get('*', function(req, res, next){
 //GET display SB Admin page
 
 app.get('/', ensureAuthenticated, function(req, res){
-    DataSet.find({}, function(err, datasets){
+    DataSet.find({}, function(err, dataset){
         //console.log(dataset);
     res.render('index', {
         title:'Dashboard',
-        datasets:datasets,
+        dataset:dataset,
         devices:{},
         
     });
@@ -111,11 +111,11 @@ app.use('/api/v1/controlpoint/', apiControlPoint);
 app.use('/api/v1/auth/', jwt);
 app.use('/controlpoint', controlpoint);
 
-
+/* 
 app.get('*', function(req, res) {
     res.status(404).end();
     res.redirect('/');
-  });
+  }); */
 
 const port = process.env.Port || 3000;
 

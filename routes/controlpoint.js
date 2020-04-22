@@ -13,12 +13,12 @@ let DataSet = require('../models/dataset');
 //GET Method to display devices on page.
 
 router.get('/', ensureAuthenticated, function(req, res){
-    DataSet.find({}, function(err, datasets){
+    DataSet.find({}, function(err, dataset){
     //if(err){res.redirect('/')}
     //console.log(devices)
     res.render('datasets', {
         title:'Devices',
-        datasets:datasets,
+        dataset:dataset,
     });
 });
 });
@@ -27,9 +27,14 @@ router.get('/', ensureAuthenticated, function(req, res){
 //Get single dataset page
 
 router.get('/:id', ensureAuthenticated, (req, res) => {
+    console.log(req.params.id)
     
     DataSet.findById(req.params.id, function(err, dataset){
-        //console.log(dataset.settings.software);
+        if(err){
+            res.redirect('/')
+        }
+        //
+        console.log(dataset);
         function hello(s) {
             var a = []; 
                 for(var i = 0; i < s.length; i++) {
@@ -51,12 +56,14 @@ router.get('/:id', ensureAuthenticated, (req, res) => {
                     
                     return false;
         } 
+        console.log(dataset.primary);
         if(dataset.primary ==undefined){
             dataset.primary = '';
-        }
-        const token = dataset.primary.split('.');
+        } 
         
-        var ip = token[0] + '.' + token[1] + '.' +token[2] + '.';
+        //const token = dataset.primary.split('.');
+        
+        //var ip = token[0] + '.' + token[1] + '.' +token[2] + '.';
         //hello(dataset.settings.software);
         //console.log(dataset);
         //console.log(hello(dataset.settings.software));
@@ -69,7 +76,7 @@ router.get('/:id', ensureAuthenticated, (req, res) => {
             ks:hello2('ks'),
             gc:hello2('gc'),
             ar:hello2('ar'),
-            ip:ip,
+            //ip:ip,
             subnetMask: dataset.subnetMask,
             defaultGateway: dataset.defaultGateway,
             primaryDns : dataset.primaryDns,
@@ -80,9 +87,10 @@ router.get('/:id', ensureAuthenticated, (req, res) => {
 
 //Get single device
 router.get('/devices/:id/:id2', ensureAuthenticated, function(req, res){
+    console.log(req.params);
     DataSet.findById(req.params.id2, function(err, relay){
         //console.log(req.params.id);
-        if(err){return}
+        if(err){return res.status(400).json('Not Found!')}
         var doc = relay.devices.id(req.params.id);
         //relay.devices.id(req.params.id).
             //console.log(doc);
