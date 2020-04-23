@@ -61,9 +61,9 @@ router.get('/:id', ensureAuthenticated, (req, res) => {
             dataset.primary = '';
         } 
         
-        //const token = dataset.primary.split('.');
+        const token = dataset.primary.split('.');
         
-        //var ip = token[0] + '.' + token[1] + '.' +token[2] + '.';
+        var ip = token[0] + '.' + token[1] + '.' +token[2] + '.';
         //hello(dataset.settings.software);
         //console.log(dataset);
         //console.log(hello(dataset.settings.software));
@@ -76,7 +76,7 @@ router.get('/:id', ensureAuthenticated, (req, res) => {
             ks:hello2('ks'),
             gc:hello2('gc'),
             ar:hello2('ar'),
-            //ip:ip,
+            ip:ip,
             subnetMask: dataset.subnetMask,
             defaultGateway: dataset.defaultGateway,
             primaryDns : dataset.primaryDns,
@@ -122,8 +122,10 @@ router.post('/devices/:id/:id2', ensureAuthenticated, function(req, res){
 const { check, validationResult } = require('express-validator/check');
 
 router.post('/dataset/add', ensureAuthenticated, [
-    //Name
-    check('dataSetName').isLength({min:3}).trim().withMessage('PC Name required'),
+    //Dataset Name
+    check('dataSetName').isLength({min:3}).trim().withMessage('Dataset Name Required'),
+    //Primary IP
+    check('primary').isLength({min:3}).trim().withMessage('Primary IP Required'),
 
 ], (req, res) => {
   // Finds the validation errors in this request and wraps them in an object with handy functions
@@ -136,6 +138,7 @@ router.post('/dataset/add', ensureAuthenticated, [
   }
   let device = new DataSet();
   device.dataSetName = req.body.dataSetName;
+  device.primary = req.body.primary;
  
 
   device.save(function(err){
